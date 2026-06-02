@@ -1,0 +1,9 @@
+run = "npm run dev"
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+build = ["npm", "run", "build"]
+run = ["npm", "run", "preview"]
+deploymentTarget = "static"
