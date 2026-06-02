@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: '0.0.0.0',
-    allowedHosts: ['.trycloudflare.com', '.ngrok-free.app', '.ngrok-free.dev'],
+    allowedHosts: ['all', '.replit.dev', '.replit.app', '.trycloudflare.com', '.ngrok-free.app'],
   },
   preview: {
     port: 3000,
