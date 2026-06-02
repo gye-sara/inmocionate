@@ -46,9 +46,6 @@ function buildPopup(f) {
   if (notificaciones.length > 0) tags.push(`<span style="background:#fef3c7;color:#b45309;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;">📋 Notificación</span>`);
   if (legales.length > 0)        tags.push(`<span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;">⚖️ Legal</span>`);
 
-  console.log('notificaciones:', notificaciones);
-  console.log('totalPagado:', totalPagado);
-
   return `
     <div style="font-family:system-ui,sans-serif;width:300px;">
       <!-- Header -->
