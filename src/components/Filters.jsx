@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../lib/supabase.js';
+import { brand } from '../theme.js';
 
 function SearchSelect({ label, value, onChange, options, placeholder }) {
   const [search, setSearch] = useState('');
@@ -20,7 +21,7 @@ function SearchSelect({ label, value, onChange, options, placeholder }) {
         onClick={() => setOpen(!open)}
         style={{
           width: '100%', padding: '8px 10px', borderRadius: '8px',
-          border: `1.5px solid ${open ? '#6366f1' : '#e2e8f0'}`,
+          border: `1.5px solid ${open ? brand.navy : '#e2e8f0'}`,
           fontSize: '13px', background: 'white', cursor: 'pointer',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}
@@ -58,7 +59,7 @@ function SearchSelect({ label, value, onChange, options, placeholder }) {
                 onClick={() => { onChange(o); setSearch(''); setOpen(false); }}
                 style={{
                   padding: '8px 10px', fontSize: '12px', color: '#1e293b', cursor: 'pointer',
-                  background: selected === o ? '#ede9fe' : 'white',
+                  background: selected === o ? '#E8EDF9' : 'white',
                   fontWeight: selected === o ? 600 : 400,
                 }}
               >
@@ -124,7 +125,7 @@ export default function Filters({ filtros, onChange, onClose }) {
     section: { marginTop: '18px', paddingTop: '16px', borderTop: '1px solid #f1f5f9' },
     sectionTitle: { fontSize: '11px', fontWeight: 700, color: '#1e293b', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px' },
     checkRow: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '9px', cursor: 'pointer', userSelect: 'none' },
-    badge: { display: 'inline-block', marginLeft: '6px', background: '#ede9fe', color: '#5b21b6', borderRadius: '10px', padding: '1px 7px', fontSize: '10px', fontWeight: 700 },
+    badge: { display: 'inline-block', marginLeft: '6px', background: brand.red, color: 'white', borderRadius: '10px', padding: '1px 7px', fontSize: '10px', fontWeight: 700 },
   };
 
   return (
@@ -162,7 +163,7 @@ export default function Filters({ filtros, onChange, onClose }) {
               type="checkbox"
               checked={!!filtros[key]}
               onChange={e => set(key, e.target.checked ? 'true' : '')}
-              style={{ accentColor: '#6366f1', width: '15px', height: '15px', cursor: 'pointer' }}
+              style={{ accentColor: brand.navy, width: '15px', height: '15px', cursor: 'pointer' }}
             />
             <span style={{ fontSize: '12px', color: '#374151' }}>{emoji} {label}</span>
           </label>
@@ -173,9 +174,9 @@ export default function Filters({ filtros, onChange, onClose }) {
       <button
         onClick={() => onChange({})}
         style={{
-          width: '100%', marginTop: '20px', padding: '10px',
-          background: '#1e293b', color: 'white', border: 'none',
-          borderRadius: '8px', cursor: 'pointer', fontSize: '13px',
+          width: '100%', marginTop: '20px', padding: '11px',
+          background: brand.navy, color: 'white', border: 'none',
+          borderRadius: '10px', cursor: 'pointer', fontSize: '13px',
           fontWeight: 600, fontFamily: 'inherit',
         }}
       >

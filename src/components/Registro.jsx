@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { brand } from '../theme.js';
+import logoWhite from '../assets/brand/logo-horizontal.png';
+import logoStacked from '../assets/brand/logo-stacked.png';
 
 const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL ?? '';
 
@@ -42,137 +45,180 @@ export default function Registro({ onRegistro }) {
     onRegistro(payload);
   };
 
-  const inp = (key, placeholder, type = 'text') => ({
-    type,
-    placeholder,
-    value: form[key],
-    onChange: e => set(key, e.target.value),
-    onKeyDown: e => e.key === 'Enter' && handleSubmit(),
-    style: {
-      width: '100%', padding: '10px 12px',
-      borderRadius: '8px', fontSize: '14px',
-      border: `1.5px solid ${errores[key] ? '#ef4444' : '#e2e8f0'}`,
-      outline: 'none', background: errores[key] ? '#fff5f5' : 'white',
-      fontFamily: 'inherit', transition: 'border-color 0.2s',
-    },
-  });
-
   return (
     <div style={{
-      minHeight: '100vh', background: '#0f172a',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: '20px',
+      minHeight: '100vh', display: 'flex',
+      fontFamily: brand.font, background: brand.surface,
     }}>
-      {/* Fondo decorativo */}
+      {/* ── Panel izquierdo (marca) ─────────────────────────────── */}
       <div style={{
-        position: 'fixed', inset: 0, pointerEvents: 'none', overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', top: '-200px', right: '-200px',
-          width: '600px', height: '600px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '-150px', left: '-150px',
-          width: '500px', height: '500px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
-        }} />
-      </div>
+        flex: '1 1 44%', position: 'relative', overflow: 'hidden',
+        background: `linear-gradient(160deg, ${brand.navy} 0%, ${brand.navyDeep} 100%)`,
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+        padding: '48px 52px',
+        color: 'white',
+      }}
+      className="gy-brand-panel">
+        {/* line-art casas decorativas */}
+        <HouseField />
 
-      <div style={{
-        width: '100%', maxWidth: '460px', position: 'relative',
-        background: '#1e293b', borderRadius: '20px',
-        border: '1px solid rgba(255,255,255,0.08)',
-        padding: '40px 40px 36px',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.4)',
-      }}>
         {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px' }}>
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <img src={logoWhite} alt="GarantíaYa"
+            style={{ height: '92px', marginLeft: '-14px', filter: 'brightness(0) invert(1)' }} />
+        </div>
+
+        {/* Mensaje central */}
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '440px' }}>
           <div style={{
-            width: '38px', height: '38px', borderRadius: '10px',
-            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '18px', boxShadow: '0 4px 12px rgba(99,102,241,0.4)',
-          }}>🏠</div>
-          <span style={{ fontSize: '17px', fontWeight: 700, color: 'white', letterSpacing: '-0.3px' }}>
-            GarantíaYa
-          </span>
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)',
+            padding: '6px 14px', borderRadius: '100px', marginBottom: '24px',
+            fontSize: '12px', fontWeight: 600, letterSpacing: '0.3px',
+          }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: brand.red }} />
+            Mapa de presencia · España
+          </div>
+          <h1 style={{
+            fontSize: '40px', fontWeight: 700, lineHeight: 1.12,
+            letterSpacing: '-1px', marginBottom: '18px',
+          }}>
+            La tranquilidad del<br />propietario, el respaldo<br />del <span style={{ color: '#7E9BE8' }}>inquilino.</span>
+          </h1>
+          <p style={{
+            fontSize: '15px', lineHeight: 1.65, color: 'rgba(255,255,255,0.72)', maxWidth: '400px',
+          }}>
+            Visualiza en tiempo real todas las pólizas activas que respaldamos en cada rincón del país.
+          </p>
         </div>
 
-        <h1 style={{
-          fontSize: '24px', fontWeight: 700, color: 'white',
-          marginBottom: '6px', lineHeight: 1.25, letterSpacing: '-0.5px',
+        {/* Footer panel */}
+        <div style={{
+          position: 'relative', zIndex: 2, display: 'flex', gap: '36px',
+          paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.12)',
         }}>
-          Bienvenido al mapa<br />
-          <span style={{ color: '#818cf8' }}>de presencia</span>
-        </h1>
-        <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '28px', lineHeight: 1.6 }}>
-          Introduce tus datos para acceder a la visualización de pólizas activas en toda España.
-        </p>
-
-        {/* Formulario */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-
-          <Field label="Nombre *" error={errores.nombre}>
-            <input {...inp('nombre', 'María')} autoFocus />
-          </Field>
-
-          <Field label="Apellidos *" error={errores.apellidos}>
-            <input {...inp('apellidos', 'García López')} />
-          </Field>
-
-          <div style={{ gridColumn: '1 / -1' }}>
-            <Field label="Inmobiliaria" error={false}>
-              <input {...inp('inmobiliaria', 'Tu agencia inmobiliaria')} />
-            </Field>
-          </div>
-
-          <div style={{ gridColumn: '1 / -1' }}>
-            <Field label="Correo electrónico *" error={errores.email}>
-              <input {...inp('email', 'maria@ejemplo.com', 'email')} />
-            </Field>
-          </div>
-
-          <Field label="Teléfono" error={false}>
-            <input {...inp('telefono', '600 000 000', 'tel')} onKeyPress={e => !/[0-9+\s]/.test(e.key) && e.preventDefault()} />
-          </Field>
-
-          <Field label="Ciudad" error={false}>
-            <input {...inp('ciudad', 'Barcelona')} />
-          </Field>
+          <Stat value="+10.000" label="Pólizas gestionadas" />
+          <Stat value="100%" label="Cobertura nacional" />
         </div>
-
-        <button
-          onClick={handleSubmit}
-          disabled={enviando}
-          style={{
-            width: '100%', marginTop: '22px', padding: '13px',
-            background: enviando ? '#4338ca' : 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-            color: 'white', border: 'none', borderRadius: '10px',
-            fontSize: '15px', fontWeight: 700, cursor: enviando ? 'not-allowed' : 'pointer',
-            fontFamily: 'inherit', letterSpacing: '-0.2px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-            boxShadow: enviando ? 'none' : '0 4px 16px rgba(99,102,241,0.4)',
-            transition: 'all 0.2s',
-          }}
-        >
-          {enviando ? (
-            <>
-              <span style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
-              Accediendo…
-            </>
-          ) : (
-            <>🗺️ Ver el mapa</>
-          )}
-        </button>
-
-        <p style={{ fontSize: '11px', color: '#334155', textAlign: 'center', marginTop: '14px', lineHeight: 1.5 }}>
-          Al continuar, aceptas que GarantíaYa guarde tu información de contacto.
-        </p>
       </div>
 
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      {/* ── Panel derecho (formulario) ──────────────────────────── */}
+      <div style={{
+        flex: '1 1 56%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '40px 24px', background: brand.canvas,
+      }}>
+        <div style={{ width: '100%', maxWidth: '440px' }}>
+          {/* Logo móvil */}
+          <img src={logoStacked} alt="GarantíaYa" className="gy-mobile-logo"
+            style={{ height: '76px', display: 'none', margin: '0 auto 8px' }} />
+
+          <h2 style={{
+            fontSize: '26px', fontWeight: 700, color: brand.ink,
+            letterSpacing: '-0.6px', marginBottom: '6px', textAlign: 'left',
+          }} className="gy-form-title">
+            Accede al mapa
+          </h2>
+          <p style={{ fontSize: '14px', color: brand.slate, marginBottom: '28px', lineHeight: 1.6 }}
+            className="gy-form-sub">
+            Introduce tus datos para visualizar las pólizas activas.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+            <Field label="Nombre *" error={errores.nombre}>
+              <Input {...bind('nombre', form, set, errores, handleSubmit)} placeholder="María" autoFocus />
+            </Field>
+            <Field label="Apellidos *" error={errores.apellidos}>
+              <Input {...bind('apellidos', form, set, errores, handleSubmit)} placeholder="García López" />
+            </Field>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <Field label="Inmobiliaria">
+                <Input {...bind('inmobiliaria', form, set, errores, handleSubmit)} placeholder="Tu agencia inmobiliaria" />
+              </Field>
+            </div>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <Field label="Correo electrónico *" error={errores.email}>
+                <Input {...bind('email', form, set, errores, handleSubmit)} type="email" placeholder="maria@ejemplo.com" />
+              </Field>
+            </div>
+            <Field label="Teléfono">
+              <Input {...bind('telefono', form, set, errores, handleSubmit)} type="tel" placeholder="600 000 000"
+                onKeyPress={e => !/[0-9+\s]/.test(e.key) && e.preventDefault()} />
+            </Field>
+            <Field label="Ciudad">
+              <Input {...bind('ciudad', form, set, errores, handleSubmit)} placeholder="Barcelona" />
+            </Field>
+          </div>
+
+          <button
+            onClick={handleSubmit}
+            disabled={enviando}
+            style={{
+              width: '100%', marginTop: '26px', padding: '15px',
+              background: enviando ? brand.redDark : brand.red,
+              color: 'white', border: 'none', borderRadius: '12px',
+              fontSize: '15px', fontWeight: 600, cursor: enviando ? 'not-allowed' : 'pointer',
+              fontFamily: 'inherit', letterSpacing: '0.2px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+              boxShadow: enviando ? 'none' : `0 10px 24px -8px ${brand.red}`,
+              transition: 'all 0.2s',
+            }}
+            onMouseOver={e => !enviando && (e.currentTarget.style.background = brand.redDark)}
+            onMouseOut={e => !enviando && (e.currentTarget.style.background = brand.red)}
+          >
+            {enviando ? (
+              <>
+                <Spinner /> Accediendo…
+              </>
+            ) : (
+              <>Ver el mapa <Arrow /></>
+            )}
+          </button>
+
+          <p style={{ fontSize: '12px', color: brand.muted, textAlign: 'center', marginTop: '18px', lineHeight: 1.5 }}>
+            Al continuar, aceptas que GarantíaYa guarde tu información de contacto.
+          </p>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 880px) {
+          .gy-brand-panel { display: none !important; }
+          .gy-mobile-logo { display: block !important; }
+          .gy-form-title, .gy-form-sub { text-align: center; }
+        }
+      `}</style>
     </div>
+  );
+}
+
+// ── helpers ────────────────────────────────────────────────────
+function bind(key, form, set, errores, submit) {
+  return {
+    value: form[key],
+    onChange: e => set(key, e.target.value),
+    onKeyDown: e => e.key === 'Enter' && submit(),
+    'data-error': errores[key] ? 'true' : undefined,
+  };
+}
+
+function Input({ 'data-error': err, style, ...props }) {
+  const [focus, setFocus] = useState(false);
+  return (
+    <input
+      {...props}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      style={{
+        width: '100%', padding: '12px 14px', borderRadius: '10px', fontSize: '14px',
+        border: `1.5px solid ${err ? brand.red : focus ? brand.navy : brand.line}`,
+        outline: 'none', fontFamily: 'inherit', color: brand.ink,
+        background: err ? '#FEF2F2' : brand.surface,
+        boxShadow: focus ? `0 0 0 3px ${brand.navy}1f` : 'none',
+        transition: 'all 0.15s',
+        ...style,
+      }}
+    />
   );
 }
 
@@ -181,12 +227,61 @@ function Field({ label, error, children }) {
     <div>
       <label style={{
         display: 'block', fontSize: '11px', fontWeight: 600,
-        color: error ? '#f87171' : '#64748b',
-        marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.5px',
+        color: error ? brand.red : brand.slate,
+        marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px',
       }}>
         {label}
       </label>
       {children}
+    </div>
+  );
+}
+
+function Stat({ value, label }) {
+  return (
+    <div>
+      <div style={{ fontSize: '24px', fontWeight: 700, lineHeight: 1 }}>{value}</div>
+      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '5px' }}>{label}</div>
+    </div>
+  );
+}
+
+function Spinner() {
+  return <span style={{
+    width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.4)',
+    borderTopColor: 'white', borderRadius: '50%',
+    animation: 'spin 0.7s linear infinite', display: 'inline-block',
+  }} />;
+}
+
+function Arrow() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
+// Casas en line-art como textura de fondo del panel de marca
+function HouseField() {
+  const House = ({ size, top, left, opacity }) => (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none"
+      stroke="white" strokeWidth="3" strokeLinejoin="round"
+      style={{ position: 'absolute', top, left, opacity }}>
+      <path d="M20 50 L50 24 L80 50 L80 82 L20 82 Z" />
+      <path d="M50 24 L50 82" />
+    </svg>
+  );
+  return (
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+      <House size={220} top="-40px" left="-50px" opacity={0.06} />
+      <House size={140} top="40%" left="62%" opacity={0.05} />
+      <House size={320} top="58%" left="-90px" opacity={0.05} />
+      <div style={{
+        position: 'absolute', top: '12%', right: '-120px',
+        width: '360px', height: '360px', borderRadius: '50%',
+        background: `radial-gradient(circle, ${brand.red}22 0%, transparent 70%)`,
+      }} />
     </div>
   );
 }

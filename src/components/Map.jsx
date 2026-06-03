@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
+import { brand } from '../theme.js';
 
 const esc = (s) => (s ?? '—').toString()
   .replace(/&/g, '&amp;').replace(/'/g, '&#39;')
@@ -136,7 +137,7 @@ export default function Map({ fianzas, stats, filtersOpen }) {
         const n    = c.getChildCount();
         const size = n > 100 ? 44 : n > 50 ? 38 : n > 10 ? 32 : 28;
         return L.divIcon({
-          html: `<div style="width:${size}px;height:${size}px;background:#1e293b;color:white;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.3);">${n > 999 ? '+999' : n}</div>`,
+          html: `<div style="width:${size}px;height:${size}px;background:${brand.navy};color:white;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(15,27,61,0.35);">${n > 999 ? '+999' : n}</div>`,
           className: '', iconSize: [size, size],
         });
       },
@@ -210,7 +211,7 @@ export default function Map({ fianzas, stats, filtersOpen }) {
 
             <div style={{ paddingTop: '8px', borderTop: '1px solid #f0f0f0' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ width: 22, height: 22, borderRadius: '50%', background: '#1e293b', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '9px', fontWeight: 700, border: '2px solid white', boxShadow: '0 0 0 1px #1e293b', flexShrink: 0 }}>N</span>
+                <span style={{ width: 22, height: 22, borderRadius: '50%', background: brand.navy, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '9px', fontWeight: 700, border: '2px solid white', boxShadow: `0 0 0 1px ${brand.navy}`, flexShrink: 0 }}>N</span>
                 <span style={{ fontSize: '12px', color: '#374151' }}>Zoom para expandir</span>
               </div>
             </div>

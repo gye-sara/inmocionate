@@ -3,6 +3,8 @@ import Registro from './components/Registro.jsx';
 import Map from './components/Map.jsx';
 import Filters from './components/Filters.jsx';
 import { useFianzas } from './hooks/useFianzas.js';
+import { brand } from './theme.js';
+import logo from './assets/brand/logo-horizontal.png';
 
 export default function App() {
   const [visitante, setVisitante] = useState(null);
@@ -25,61 +27,76 @@ export default function App() {
 
   // ── Mapa ──────────────────────────────────────────────────────────────────
   return (
-    <div style={{ display: 'flex', height: '100vh', flexDirection: 'column', fontFamily: 'system-ui, sans-serif' }}>
+    <div style={{ display: 'flex', height: '100vh', flexDirection: 'column', fontFamily: brand.font }}>
 
       {/* Header */}
       <header style={{
-        background: '#1e293b', color: 'white',
-        padding: '10px 20px', display: 'flex',
+        background: brand.surface, color: brand.ink,
+        padding: '12px 22px', display: 'flex',
         alignItems: 'center', justifyContent: 'space-between',
         zIndex: 1001, position: 'relative', gap: '12px',
-        boxShadow: '0 1px 0 rgba(255,255,255,0.06)',
+        borderBottom: `1px solid ${brand.line}`,
+        boxShadow: '0 1px 12px rgba(15,27,61,0.04)',
       }}>
         {/* Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-          <div style={{
-            width: '30px', height: '30px', borderRadius: '8px',
-            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '15px',
-          }}>🏠</div>
-          <span style={{ fontSize: '15px', fontWeight: 700, whiteSpace: 'nowrap' }}>GarantíaYa</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, minWidth: 0 }}>
+          <img src={logo} alt="GarantíaYa" style={{ height: '36px', marginLeft: '-6px' }} />
+          <span className="gy-hd-divider" style={{
+            display: 'inline-block', height: '22px', width: '1px',
+            background: brand.line,
+          }} />
+          <span className="gy-hd-subtitle" style={{ fontSize: '13px', fontWeight: 600, color: brand.slate, whiteSpace: 'nowrap' }}>
+            Mapa de presencia
+          </span>
         </div>
 
         {/* Visitante actual */}
-        <div style={{
-          fontSize: '12px', color: 'rgba(255,255,255,0.5)',
-          background: 'rgba(255,255,255,0.06)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          padding: '5px 12px', borderRadius: '20px',
-          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '260px',
+        <div className="gy-hd-visitor" style={{
+          fontSize: '12px', color: brand.slate,
+          background: brand.canvas,
+          border: `1px solid ${brand.line}`,
+          padding: '6px 14px', borderRadius: '100px',
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '300px',
+          minWidth: 0,
+          display: 'flex', alignItems: 'center', gap: '8px',
         }}>
-          👤 <span style={{ color: 'rgba(255,255,255,0.85)', fontWeight: 500 }}>
+          <span style={{
+            width: '24px', height: '24px', borderRadius: '50%', flexShrink: 0,
+            background: brand.navy, color: 'white',
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '11px', fontWeight: 700,
+          }}>
+            {(visitante.nombre?.[0] ?? '') + (visitante.apellidos?.[0] ?? '')}
+          </span>
+          <span style={{ color: brand.ink, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {visitante.nombre} {visitante.apellidos}
           </span>
           {visitante.inmobiliaria && (
-            <span style={{ color: 'rgba(255,255,255,0.4)' }}> · {visitante.inmobiliaria}</span>
+            <span className="gy-hd-agency" style={{ color: brand.muted }}>· {visitante.inmobiliaria}</span>
           )}
         </div>
 
         {/* Acciones */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           {/* Filtros */}
           <button
             onClick={() => setShowFilters(!showFilters)}
+            title="Filtros"
             style={{
-              background: showFilters ? 'rgba(99,102,241,0.3)' : 'rgba(255,255,255,0.08)',
-              border: `1px solid ${showFilters ? 'rgba(99,102,241,0.5)' : 'rgba(255,255,255,0.15)'}`,
-              color: 'white', padding: '6px 14px', borderRadius: '8px',
+              background: showFilters ? brand.navy : brand.surface,
+              border: `1.5px solid ${showFilters ? brand.navy : brand.line}`,
+              color: showFilters ? 'white' : brand.ink,
+              padding: '8px 16px', borderRadius: '10px',
               cursor: 'pointer', fontSize: '13px', fontWeight: 600,
-              display: 'flex', alignItems: 'center', gap: '6px',
-              fontFamily: 'inherit',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              fontFamily: 'inherit', transition: 'all 0.18s',
             }}
           >
-            ⚙️ Filtros
+            <FilterIcon />
+            <span className="gy-btn-label">Filtros</span>
             {activeCount > 0 && (
               <span style={{
-                background: '#6366f1', borderRadius: '10px',
+                background: brand.red, color: 'white', borderRadius: '100px',
                 padding: '1px 7px', fontSize: '11px', fontWeight: 700,
               }}>
                 {activeCount}
@@ -94,20 +111,36 @@ export default function App() {
               setFiltros({});
               setShowFilters(false);
             }}
+            title="Siguiente visitante"
             style={{
-              background: 'rgba(99,102,241,0.15)',
-              border: '1px solid rgba(99,102,241,0.35)',
-              color: '#a5b4fc', padding: '6px 14px', borderRadius: '8px',
+              background: brand.red,
+              border: 'none',
+              color: 'white', padding: '8px 16px', borderRadius: '10px',
               cursor: 'pointer', fontSize: '13px', fontWeight: 600,
-              display: 'flex', alignItems: 'center', gap: '6px',
-              fontFamily: 'inherit', transition: 'background 0.2s',
+              display: 'flex', alignItems: 'center', gap: '8px',
+              fontFamily: 'inherit', transition: 'background 0.18s',
+              boxShadow: `0 6px 16px -8px ${brand.red}`,
             }}
-            onMouseOver={e => e.currentTarget.style.background = 'rgba(99,102,241,0.28)'}
-            onMouseOut={e => e.currentTarget.style.background = 'rgba(99,102,241,0.15)'}
+            onMouseOver={e => e.currentTarget.style.background = brand.redDark}
+            onMouseOut={e => e.currentTarget.style.background = brand.red}
           >
-            👥 Siguiente visitante
+            <UserSwitchIcon />
+            <span className="gy-btn-label">Siguiente visitante</span>
           </button>
         </div>
+
+        <style>{`
+          @media (max-width: 900px) {
+            .gy-hd-agency { display: none; }
+          }
+          @media (max-width: 760px) {
+            .gy-hd-divider, .gy-hd-subtitle { display: none; }
+            .gy-btn-label { display: none; }
+          }
+          @media (max-width: 560px) {
+            .gy-hd-visitor { display: none !important; }
+          }
+        `}</style>
       </header>
 
       {/* Cuerpo */}
@@ -118,12 +151,12 @@ export default function App() {
           <>
             <div
               onClick={() => setShowFilters(false)}
-              style={{ position: 'absolute', inset: 0, zIndex: 999, background: 'rgba(0,0,0,0.3)' }}
+              style={{ position: 'absolute', inset: 0, zIndex: 999, background: 'rgba(15,27,61,0.28)' }}
             />
             <div style={{
               position: 'absolute', top: 0, left: 0, bottom: 0,
               zIndex: 1000, width: '280px',
-              boxShadow: '4px 0 24px rgba(0,0,0,0.15)', overflowY: 'auto',
+              boxShadow: '4px 0 32px rgba(15,27,61,0.18)', overflowY: 'auto',
             }}>
               <Filters filtros={filtros} onChange={setFiltros} onClose={() => setShowFilters(false)} />
             </div>
@@ -136,14 +169,14 @@ export default function App() {
             <div style={{
               display: 'flex', flexDirection: 'column',
               alignItems: 'center', justifyContent: 'center',
-              height: '100%', gap: '16px',
+              height: '100%', gap: '16px', background: brand.canvas,
             }}>
               <div style={{
-                width: '36px', height: '36px',
-                border: '3px solid #e2e8f0', borderTopColor: '#6366f1',
+                width: '38px', height: '38px',
+                border: `3px solid ${brand.line}`, borderTopColor: brand.red,
                 borderRadius: '50%', animation: 'spin 0.7s linear infinite',
               }} />
-              <span style={{ fontSize: '14px', color: '#94a3b8' }}>Cargando pólizas…</span>
+              <span style={{ fontSize: '14px', color: brand.slate, fontWeight: 500 }}>Cargando pólizas…</span>
               <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </div>
           ) : (
@@ -152,5 +185,23 @@ export default function App() {
         </div>
       </div>
     </div>
+  );
+}
+
+function FilterIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+    </svg>
+  );
+}
+
+function UserSwitchIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <polyline points="17 11 20 8 23 11" /><path d="M20 8v8" />
+    </svg>
   );
 }
