@@ -91,15 +91,6 @@ export default function Registro({ onRegistro }) {
             Visualiza en tiempo real todas las pólizas activas que respaldamos en cada rincón del país.
           </p>
         </div>
-
-        {/* Footer panel */}
-        <div style={{
-          position: 'relative', zIndex: 2, display: 'flex', gap: '36px',
-          paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.12)',
-        }}>
-          <Stat value="+10.000" label="Pólizas gestionadas" />
-          <Stat value="100%" label="Cobertura nacional" />
-        </div>
       </div>
 
       {/* ── Panel derecho (formulario) ──────────────────────────── */}
@@ -233,15 +224,6 @@ function Field({ label, error, children }) {
         {label}
       </label>
       {children}
-    </div>
-  );
-}
-
-function Stat({ value, label }) {
-  return (
-    <div>
-      <div style={{ fontSize: '24px', fontWeight: 700, lineHeight: 1 }}>{value}</div>
-      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '5px' }}>{label}</div>
     </div>
   );
 }
